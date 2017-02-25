@@ -16,6 +16,13 @@ version=\$(rpm -q --qf "%{VERSION}" \$(rpm -q --whatprovides redhat-release))
 ver=\${version:0:1}
 \`\`\`
 
+
+If you install global-cags, you need to run the following command for the python34-pygments package.
+
+\`\`\`
+sudo curl -sL -o /etc/yum.repos.d/hnakamur-python34-pygments.repo https://copr.fedoraproject.org/coprs/hnakamur/python34-pygments/repo/epel-${ver}/hnakamur-python34-pygments-epel-${ver}.repo
+\`\`\`
+
 \`\`\`
 sudo curl -sL -o /etc/yum.repos.d/${COPR_USERNAME}-${copr_project_name}.repo https://copr.fedoraproject.org/coprs/${COPR_USERNAME}/${copr_project_name}/repo/epel-\${ver}/${COPR_USERNAME}-${copr_project_name}-epel-\${ver}.repo
 \`\`\`
