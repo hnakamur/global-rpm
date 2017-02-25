@@ -1,6 +1,6 @@
 Name:           global
 Version:        6.5.6
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Source code tag system
 Group:          Development/Tools
 # The entire source code is GPLv3+ except
@@ -31,7 +31,7 @@ assembler source code.
 Summary:        Integration of Exuberant Ctags and Pygments with GLOBAL
 License:        GPLv3+
 Group:          Development/Tools
-Requires:       %{name} = %{version}-%{release}, ctags-etags, python3-pygments
+Requires:       %{name} = %{version}-%{release}, ctags-etags, python34-pygments
 
 %description    ctags
 This package contains plug-ins that provides support for more languages
@@ -99,6 +99,9 @@ fi
 %{_libdir}/gtags/*
 
 %changelog
+* Sat Feb 25 2017 Hiroaki Nakamura <hnakamur@gmail.com> - 6.5.6-2
+- Change ctag package dependency from python3-pygments to python34-pygments
+
 * Sat Feb 25 2017 Hiroaki Nakamura <hnakamur@gmail.com> - 6.5.6-1
 - Update to 6.5.6
 
