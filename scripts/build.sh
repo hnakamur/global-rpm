@@ -25,7 +25,6 @@ sudo yum install ${rpm_name}
 \`\`\`"
 
 spec_file=${rpm_name}.spec
-#mock_chroots="epel-6-${arch} epel-7-${arch}"
 mock_chroots="epel-7-${arch}"
 
 usage() {
@@ -42,7 +41,7 @@ EOF
 topdir=`rpm --eval '%{_topdir}'`
 
 download_source_files() {
-  source_urls=`rpmspec -P ${topdir}/SPECS/${spec_file} | awk '/^Source[0-9]*:\s*http/ {print $2}'`
+  source_urls=`rpmspec -P ${topdir}/SPECS/${spec_file} | awk '/^Source[0-9]*:\s*(ht|f)tp/ {print $2}'`
   for source_url in $source_urls; do
     source_file=${source_url##*/}
     (cd ${topdir}/SOURCES && if [ ! -f ${source_file} ]; then curl -sLO ${source_url}; fi)
@@ -58,31 +57,12 @@ build_srpm() {
   srpm_file=${rpm_name}-${rpm_version_release}.src.rpm
 }
 
-create_mock_chroot_cfg() {
-  base_chroot=$1
-  mock_chroot=$2
-
-  # Insert ${scl_repo_file} before closing """ of config_opts['yum.conf']
-  # See: http://unix.stackexchange.com/a/193513/135274
-  #
-  # NOTE: Support of adding repository was added to mock,
-  #       so you can use it in the future.
-  # See: https://github.com/rpm-software-management/ci-dnf-stack/issues/30
-  (cd ${topdir} \
-    && echo | sed -e '$d;N;P;/\n"""$/i\
-' -e '/\n"""$/r '${luajit_repo_file} -e '/\n"""$/a\
-' -e D /etc/mock/${base_chroot}.cfg - | sudo sh -c "cat > /etc/mock/${mock_chroot}.cfg")
-}
-
 build_rpm_with_mock() {
   build_srpm
   for mock_chroot in $mock_chroots; do
-    base_chroot=$mock_chroot
-    mock_chroot=${base_chroot}-with-luajit
-    create_mock_chroot_cfg $base_chroot $mock_chroot
     /usr/bin/mock -r ${mock_chroot} --rebuild ${topdir}/SRPMS/${srpm_file}
 
-    mock_result_dir=/var/lib/mock/${base_chroot}/result
+    mock_result_dir=/var/lib/mock/${mock_chroot}/result
     if [ -n "`find ${mock_result_dir} -maxdepth 1 -name \"${rpm_name}-*${version}-*.${arch}.rpm\" -print -quit`" ]; then
       mkdir -p ${topdir}/RPMS/${arch}
       cp ${mock_result_dir}/${rpm_name}-*${version}-*.${arch}.rpm ${topdir}/RPMS/${arch}/
@@ -110,7 +90,7 @@ build_rpm_on_copr() {
       chroot_opts="$chroot_opts --data-urlencode ${mock_chroot}=y"
 
       # Remove suffix '-x86_64' from epel-6-x86_64, or epel-7-x86_64
-      chroot_without_arch=${base_chroot%-*}
+      chroot_without_arch=${mock_chroot%-*}
       chroot_opts="$chroot_opts --data-urlencode repos=https://copr-be.cloud.fedoraproject.org/results/hnakamur/luajit/${chroot_without_arch}-\$basearch/"
     done
     curl -s -X POST -u "${COPR_LOGIN}:${COPR_TOKEN}" \

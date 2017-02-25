@@ -1,5 +1,5 @@
 Name:           global
-Version:        6.5.2
+Version:        6.5.6
 Release:        1%{?dist}
 Summary:        Source code tag system
 Group:          Development/Tools
@@ -13,7 +13,7 @@ URL:            http://www.gnu.org/software/global
 Source:         ftp://ftp.gnu.org/pub/gnu/global/global-%{version}.tar.gz
 BuildRequires:  ncurses-devel, ctags-etags
 BuildRequires:  libtool-ltdl-devel
-BuildRequires:  python3-devel
+BuildRequires:  python34-devel
 BuildRequires:  emacs, xemacs
 Requires:       emacs-filesystem >= %{_emacs_version}
 Requires:       xemacs-filesystem >= %{_xemacs_version}
@@ -55,10 +55,7 @@ rm -f %{buildroot}%{_libdir}/gtags/*.*a
 rm -f %{buildroot}%{_libdir}/gtags/user-custom.*
 
 rm %{buildroot}/%{_datadir}/gtags/{gtags.el,gtags.conf}
-rm %{buildroot}/%{_datadir}/gtags/{AUTHORS,BOKIN_MODEL,BOKIN_MODEL_FAQ,COPYING,ChangeLog,DONORS,FAQ,INSTALL,LICENSE,NEWS,README,THANKS}
-
-# fix rpmlint error
-chmod +x %{buildroot}/%{_datadir}/gtags/{global,completion}.cgi.tmpl
+rm %{buildroot}/%{_datadir}/gtags/{AUTHORS,COPYING,ChangeLog,DONORS,FAQ,INSTALL,LICENSE,NEWS,README,THANKS}
 
 mkdir -p %{buildroot}%{_sysconfdir}
 install gtags.conf -t %{buildroot}%{_sysconfdir}
@@ -85,8 +82,8 @@ if [ $1 -eq 0 ]; then
 fi
 
 %files
-%doc README THANKS AUTHORS FAQ NEWS BOKIN_MODEL
-%doc BOKIN_MODEL_FAQ DONORS ChangeLog
+%doc README THANKS AUTHORS FAQ NEWS
+%doc DONORS ChangeLog
 %license LICENSE COPYING
 %config(noreplace) %{_sysconfdir}/gtags.conf
 %{_bindir}/*
@@ -102,6 +99,9 @@ fi
 %{_libdir}/gtags/*
 
 %changelog
+* Sat Feb 25 2017 Hiroaki Nakamura <hnakamur@gmail.com> - 6.5.6-1
+- Update to 6.5.6
+
 * Fri Mar 11 2016 Robin Lee <cheeselee@fedoraproject.org> - 6.5.2-1
 - Update to 6.5.2
 - Explicitly use Python3
