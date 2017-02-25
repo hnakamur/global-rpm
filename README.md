@@ -1,27 +1,7 @@
-nginx-rpm
+global-rpm
 =========
 
-A Dockerfile to build [nginx](http://nginx.org/) rpm for CentOS 6 and 7 using [fedora copr](https://copr.fedoraproject.org/).
-
-This build includes the following modules as dynamic modules:
-
-* [openresty/lua-nginx-module](https://github.com/openresty/lua-nginx-module)
-* [openresty/headers-more-nginx-module](https://github.com/openresty/headers-more-nginx-module)
-* [cloudflare/lua-upstream-cache-nginx-module](https://github.com/cloudflare/lua-upstream-cache-nginx-module)
-* [wandenberg/nginx-sorted-querystring-module](https://github.com/wandenberg/nginx-sorted-querystring-module)
-* [arut/nginx-rtmp-module](https://github.com/arut/nginx-rtmp-module)
-* [FRiCKLE/ngx_cache_purge](https://github.com/FRiCKLE/ngx_cache_purge)
-* [replay/ngx_http_secure_download](https://github.com/replay/ngx_http_secure_download)
-* [replay/ngx_http_consistent_hash](https://github.com/replay/ngx_http_consistent_hash)
-* [openresty/srcache-nginx-module](https://github.com/openresty/srcache-nginx-module)
-* [openresty/redis2-nginx-module](https://github.com/openresty/redis2-nginx-module)
-* [openresty/memc-nginx-module](https://github.com/openresty/memc-nginx-module)
-* [openresty/lua-upstream-nginx-module](https://github.com/openresty/lua-upstream-nginx-module)
-* [openresty/echo-nginx-module](https://github.com/openresty/echo-nginx-module)
-* [bpaquet/ngx_http_enhanced_memcached_module](https://github.com/bpaquet/ngx_http_enhanced_memcached_module)
-* [arut/nginx-dav-ext-module](https://github.com/arut/nginx-dav-ext-module)
-
-Warning: Modules may be added or deleted without notice.
+A Dockerfile to build [global](https://www.gnu.org/software/global/) rpm for CentOS 7 using [fedora copr](https://copr.fedoraproject.org/).
 
 ## Setup
 
